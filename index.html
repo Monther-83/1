@@ -36,12 +36,32 @@
   ⚠️ ملاحظة هامة: يرجى عدم ربط الجهاز بالإنترنت لطفاً ⚠️
 </div>
 
-    <!-- القائمة العائمة -->
-    <div class="floating-menu">
-      <button onclick="showpayloads()" class="menu-btn" id="payloadsbtn">الحمولات</button>
-      <button onclick="showsettings()" class="menu-btn" id="settings-btn">الإعدادات</button>
-      <button onclick="showabout()" class="menu-btn" id="about-btn">أتصل بنا</button>
-    </div>
+   <!-- القائمة العائمة اليمنى (الأصلية) -->
+<div class="floating-menu">
+  <button onclick="showpayloads()" class="menu-btn" id="payloadsbtn">الحمولات</button>
+  <button onclick="showsettings()" class="menu-btn" id="settings-btn">التفعيل التلقائي</button>
+</div>
+
+<!-- زر اتصل بنا الجديد في أعلى يسار الشاشة -->
+<button onclick="showContact()" class="menu-btn contact-btn" id="contact-btn">أتصل بنا</button>
+
+<style>
+/* الحفاظ على الخصائص الأصلية مع تعديل الموضع فقط */
+.contact-btn {
+  position: fixed;
+  top: 2%;
+  left: 2%;
+  z-index: 1000;
+  /* باقي الخصائص ستورث من .menu-btn */
+}
+</style>
+
+<script>
+function showContact() {
+  // رسالة الاتصال المعدلة
+  alert("في حال حدوث أي خطأ في تفعيل التهكير يجب عليك إعادة تشغيل الجهاز مرة أخرى\n\nللتواصل معنا يرجى الاتصال بالأرقام التالية:\n07700672595\n07808215883\n\nمنذر سوني");
+}
+</script>
 
     <div class="header">
       <div class="header-title" id="header-title">منذر سوني</div>
@@ -141,70 +161,204 @@
     <div class="overlay" id="overlay-popup"></div>
     <div class="popup" id="about-popup">
       <h2>منذر سوني </h2>
-      <p>إذا واجهتك أي مشكلة يرجى الإتصال بالرقم التالي 07700672595 </p>
-      <p>في حال حدوث أي خطأ في النظام يرجى إعادة تشغيل الجهاز مرة أخرى </p>
-      <p>تم التطوير بواسطة: منذر سوني</p>
+      <h2>إذا واجهتك أي مشكلة يرجى الإتصال بالرقم التالي 07700672595 </h2>
+      <h2>في حال حدوث أي خطأ في النظام يرجى إعادة تشغيل الجهاز مرة أخرى </h2>
+      <h2>تم التطوير بواسطة: منذر سوني</h2>
       <button  onclick="closeabout()" class="close-btn" id="close-about">إغلاق</button>
     </div>
 
     <!-- نافذة الإعدادات -->
-    <div class="overlay" id="overlay-popup"></div>
+<div class="overlay" id="overlay-popup"></div>
 <div class="popup" id="settings-popup">
-  <h2>إعدادات PSFree</h2>
-  <p>إصدارات النظام المدعومة:</p>
-  <p>- 9.00</p>
-  <p>اختر النسخة المفضلة:</p>
-  <label>
-    <input type="radio" name="hen" value="GoldHEN" id="goldhen-radio"> GoldHEN
-  </label>
-  <label>
-    <input type="radio" name="hen" value="HEN" id="hen-radio"> HEN
-  </label>
-  <label id="autojbchkb">
-    <input type="checkbox" id="ckbaj" />
-    <p id="agtext">جيلبريك تلقائي</p>
-  </label>
+  <h2>التفعيل التلقائي</h2>
+  <h2>اختر كلمة تشغيل حتى يتم التفعيل التلقائي </h2>
+  
+  <!-- مربع التفعيل التلقائي الكبير -->
+  <div class="auto-jb-container">
+    <h3>تفعيل الجيلبريك التلقائي</h3>
+    <div class="auto-jb-box" id="auto-jb-box">
+      <label class="auto-jb-toggle">
+        <input type="checkbox" id="ckbaj" />
+        <span class="slider"></span>
+      </label>
+      <span class="auto-jb-status" id="auto-jb-status">معطل</span>
+    </div>
+    
+    <div class="auto-jb-buttons">
+      <button class="jb-activate-btn" onclick="activateAutoJB()">تفعيل</button>
+      <button class="jb-deactivate-btn" onclick="deactivateAutoJB()">إلغاء التفعيل</button>
+    </div>
+  </div>
+  
   <button onclick="closesettings()" class="close-btn" id="close-settings">إغلاق</button>
 </div>
+
+<style>
+/* تنسيقات مربع التفعيل التلقائي */
+.auto-jb-container {
+  background: rgba(30, 30, 60, 0.7);
+  border: 2px solid #3a86ff;
+  border-radius: 15px;
+  padding: 20px;
+  margin: 20px 0;
+  box-shadow: 0 0 15px #3a86ff50;
+}
+
+.auto-jb-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin: 15px 0;
+}
+
+.auto-jb-toggle {
+  position: relative;
+  display: inline-block;
+  width: 80px;
+  height: 40px;
+}
+
+.auto-jb-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #1a1a2e;
+  transition: .4s;
+  border-radius: 34px;
+  border: 2px solid #3a86ff;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 30px;
+  width: 30px;
+  left: 4px;
+  bottom: 4px;
+  background-color: #3a86ff;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #16213e;
+}
+
+input:checked + .slider:before {
+  transform: translateX(40px);
+  background-color: #4cc9f0;
+}
+
+.auto-jb-status {
+  font-size: 24px;
+  color: #e6f7ff;
+  min-width: 100px;
+  text-align: center;
+}
+
+.auto-jb-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.jb-activate-btn, .jb-deactivate-btn {
+  padding: 12px 25px;
+  border-radius: 10px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: none;
+}
+
+.jb-activate-btn {
+  background-color: #3a86ff;
+  color: #0a0a1a;
+}
+
+.jb-activate-btn:hover {
+  background-color: #4cc9f0;
+  box-shadow: 0 0 15px #3a86ff;
+}
+
+.jb-deactivate-btn {
+  background-color: #ff3a3a;
+  color: #e6f7ff;
+}
+
+.jb-deactivate-btn:hover {
+  background-color: #ff6b6b;
+  box-shadow: 0 0 15px #ff3a3a50;
+}
+</style>
 
 <script>
 // دالة لتهيئة الإعدادات عند تحميل الصفحة
 function initSettings() {
   // تحميل الإعدادات المحفوظة
   const settings = JSON.parse(localStorage.getItem('psfreeSettings')) || {
-    henVersion: 'GoldHEN',
     autoJB: false
   };
 
-  // تعيين قيم الراديو
-  document.getElementById(`${settings.henVersion.toLowerCase()}-radio`).checked = true;
-  
   // تعيين حالة التفعيل التلقائي
   document.getElementById('ckbaj').checked = settings.autoJB;
+  updateAutoJBStatus(settings.autoJB);
   
   // إضافة الأحداث
-  document.querySelectorAll('input[name="hen"]').forEach(radio => {
-    radio.addEventListener('change', function() {
-      saveSettings();
-    });
-  });
-  
   document.getElementById('ckbaj').addEventListener('change', function() {
     saveSettings();
+    updateAutoJBStatus(this.checked);
     if(this.checked) {
       prepareAutoJailbreak();
     }
   });
 }
 
+// دالة لتحديث حالة التفعيل التلقائي
+function updateAutoJBStatus(isActive) {
+  const statusElement = document.getElementById('auto-jb-status');
+  if(isActive) {
+    statusElement.textContent = 'مفعل';
+    statusElement.style.color = '#4cc9f0';
+  } else {
+    statusElement.textContent = 'معطل';
+    statusElement.style.color = '#ff6b6b';
+  }
+}
+
 // دالة لحفظ الإعدادات
 function saveSettings() {
   const settings = {
-    henVersion: document.querySelector('input[name="hen"]:checked').value,
     autoJB: document.getElementById('ckbaj').checked
   };
   
   localStorage.setItem('psfreeSettings', JSON.stringify(settings));
+}
+
+// دالة للتفعيل التلقائي
+function activateAutoJB() {
+  document.getElementById('ckbaj').checked = true;
+  saveSettings();
+  updateAutoJBStatus(true);
+  prepareAutoJailbreak();
+}
+
+// دالة لإلغاء التفعيل التلقائي
+function deactivateAutoJB() {
+  document.getElementById('ckbaj').checked = false;
+  saveSettings();
+  updateAutoJBStatus(false);
 }
 
 // دالة للتحضير للجيلبريك التلقائي
@@ -218,8 +372,6 @@ function prepareAutoJailbreak() {
 
 // دالة لتنفيذ الجيلبريك (استبدلها بالدالة الفعلية)
 function executeJailbreak() {
-  // مثال:
-  // document.getElementById('jailbreak').click();
   console.log('جاري تنفيذ الجيلبريك...');
 }
 
@@ -227,6 +379,4 @@ function executeJailbreak() {
 document.addEventListener('DOMContentLoaded', initSettings);
 </script>
 
-    <script src='./js/index.js'></script>
-  </body>
-</html>
+<script src='./js/index.js'></script>
